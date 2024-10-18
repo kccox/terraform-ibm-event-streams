@@ -50,6 +50,12 @@ variable "plan" {
   }
 }
 
+variable "metrics" {
+  type        = string
+  description = "Enhanced metrics to activate, as a serialized JSON array of strings. Allowed values: 'topic', 'partition', 'consumers'. Example: '[topic,consumers]'."
+  default     = "[]"
+}
+
 variable "topics" {
   type = list(object(
     {

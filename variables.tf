@@ -75,6 +75,12 @@ variable "service_endpoints" {
   }
 }
 
+variable "metrics" {
+  type        = string
+  description = "Enhanced metrics to activate, as a serialized JSON array of strings. Allowed values: 'topic', 'partition', 'consumers'. Example: '[topic,consumers]'."
+  default     = "[]"
+}
+
 variable "skip_iam_authorization_policy" {
   type        = bool
   description = "Set to true to skip the creation of an IAM authorization policy that permits all Event Streams database instances in the resource group to read the encryption key from the KMS instance. If set to false, pass in a value for the KMS instance in the existing_kms_instance_guid variable. In addition, no policy is created if var.kms_encryption_enabled is set to false."
@@ -108,6 +114,17 @@ variable "topics" {
     }
   ))
   description = "The list of topics to apply to resources. Only one topic is allowed for Lite plan instances."
+  default     = []
+}
+
+variable "access_tags" {
+  type = list(object(
+    {
+      tag_type = string
+      tags     = list(string)
+    }
+  ))
+  description = "The list of tags to create and apply to the service instance. Use tag_type 'access' to create access tags."
   default     = []
 }
 

@@ -52,6 +52,7 @@ resource "ibm_resource_instance" "es_instance" {
     throughput        = var.throughput
     storage_size      = var.storage_size
     kms_key_crn       = var.kms_key_crn
+    metrics           = var.metrics
   }
 }
 
@@ -77,6 +78,18 @@ resource "ibm_event_streams_topic" "es_topic" {
   partitions           = var.topics[count.index].partitions
   config               = var.topics[count.index].config
 }
+
+##############################################################################
+# ACCESS TAGS
+##############################################################################
+
+resource "ibm_resource_tag" "es_access_tag" {
+  count       = length(var.access_tags)
+  resource_id = ibm_resource_instance.es_instance.id
+  tags        = var.access_tags[count.index].tags
+  tag_type    = var.access_tags[count.index].tag_type
+}
+
 
 ##############################################################################
 # IAM Authorization Policy
